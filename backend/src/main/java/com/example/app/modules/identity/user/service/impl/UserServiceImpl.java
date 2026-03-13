@@ -16,11 +16,14 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
 
     public UserServiceImpl(UserRepository userRepository) { this.userRepository = userRepository; }
+    @Override
     public UserResponse create(CreateUserRequest request) {
         Long id = userRepository.findAll().stream().mapToLong(User::id).max().orElse(0L) + 1;
         return map(userRepository.save(new User(id, request.username(), request.password(), request.role(), request.officeId(), request.active())));
     }
+    @Override
     public List<UserResponse> list() { return userRepository.findAll().stream().map(this::map).toList(); }
+    @Override
     public UserResponse update(Long id, UpdateUserRequest request) {
         User existing = userRepository.findById(id).orElseThrow(() -> new NotFoundException("User not found"));
         return map(userRepository.save(new User(id, request.username(), existing.password(), request.role(), request.officeId(), request.active())));

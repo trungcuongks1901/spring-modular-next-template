@@ -17,8 +17,12 @@ public class InMemoryUserRepository implements UserRepository {
         data.put(2L, new User(2L, "user1", "user123", Role.OFFICE, 1L, true));
     }
 
+    @Override
     public User save(User user) { data.put(user.id(), user); return user; }
+    @Override
     public List<User> findAll() { return new ArrayList<>(data.values()); }
+    @Override
     public Optional<User> findById(Long id) { return Optional.ofNullable(data.get(id)); }
+    @Override
     public Optional<User> findByUsername(String username) { return data.values().stream().filter(u -> u.username().equals(username)).findFirst(); }
 }

@@ -24,6 +24,7 @@ public class ReportServiceImpl implements ReportService {
         this.officeService = officeService;
     }
 
+    @Override
     public ReportResponse create(CreateReportRequest request, UserPrincipal userPrincipal) {
         Long id = reportRepository.findAll().stream().mapToLong(Report::id).max().orElse(0L) + 1;
         if (userPrincipal.officeId() == null) {
@@ -33,6 +34,7 @@ public class ReportServiceImpl implements ReportService {
         return map(report);
     }
 
+    @Override
     public List<ReportResponse> list(UserPrincipal userPrincipal) {
         return reportRepository.findAll().stream()
                 .filter(r -> "ADMIN".equals(userPrincipal.role()) || r.officeId().equals(userPrincipal.officeId()))
@@ -40,6 +42,7 @@ public class ReportServiceImpl implements ReportService {
                 .toList();
     }
 
+    @Override
     public List<OfficeResponse> reportOffices(UserPrincipal userPrincipal) {
         return "ADMIN".equals(userPrincipal.role())
                 ? officeService.list()

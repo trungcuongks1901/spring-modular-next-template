@@ -20,6 +20,7 @@ public class AuthServiceImpl implements AuthService {
         this.jwtService = jwtService;
     }
 
+    @Override
     public LoginResponse login(LoginRequest request) {
         User user = userRepository.findByUsername(request.username())
                 .filter(u -> u.password().equals(request.password()) && u.active())
